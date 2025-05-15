@@ -7,31 +7,31 @@ import 'package:responsive_web_app/View/responsive.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-   @override
+  @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.sizeOf(context);
+    bool isLaptop = Responsive.isLaptop(context);
+    bool isMobile = Responsive.isMobile(context);
+
     return Scaffold(
-      appBar: Responsive.isLaptop(context) ? null : AppBar(),
-      drawer:
-          Responsive.isLaptop(context) ? null : Drawer(child: leftSection()),
-      body: Row(
-        children: [
-          if (Responsive.isLaptop(context))
-            Expanded(flex: 2, child: leftSection()),
-          Expanded(
-              flex: 5,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    centerSection(),
-                    if (Responsive.isMobile(context)) rightSection()
-                  ],
-                ),
-              )),
-          if (!Responsive.isMobile(context))
-            Expanded(flex: 3, child: rightSection()),
-        ],
-      ),
+      appBar: isLaptop ? null : AppBar(),
+      drawer: isLaptop ? null : Drawer(child: const leftSection()),
+      body: isLaptop
+          ? Row(
+              children: const [
+                Expanded(flex: 2, child: leftSection()),
+                Expanded(flex: 5, child: centerSection()),
+                Expanded(flex: 3, child: rightSection()),
+              ],
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: const [
+                  leftSection(),
+                  centerSection(),
+                  rightSection(),
+                ],
+              ),
+            ),
     );
   }
 }
